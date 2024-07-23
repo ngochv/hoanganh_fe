@@ -9,7 +9,6 @@ import { apiLogin } from "@/lib/api";
 import { isResponseSuccess } from "@/lib/helpers";
 import { useAppDispatch } from "@/lib/store/store";
 import { setAuthState } from "@/lib/store/authSlice";
-import { useAuth } from "../AuthContext";
 import { useRouter } from "next/navigation";
 import { setToken } from "@/utils/auth";
 
@@ -20,7 +19,6 @@ type FieldType = {
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
-  const authContext = useAuth();
   const router = useRouter();
 
   const [isLoadingSubmit, setLoadingSubmit] = useState(false);
@@ -36,9 +34,6 @@ export default function LoginPage() {
         const { data, status }: any = responseLogin;
         setToken(data.token);
         dispatch(setAuthState({ user: data.user, roles: data.roles }));
-        if (authContext) {
-          authContext.setUserAuth({ ...data.user });
-        }
         router.push('/');
       } else {
         message.error("Email hoặc mật khẩu không đúng.");

@@ -2,7 +2,6 @@
 
 import React from "react";
 
-import { AuthProvider } from "@/app/AuthContext";
 import { RouterWrapper } from "@/app/routerWrapper";
 import ReduxProvider from "@/lib/store/redux-provider";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
@@ -18,12 +17,10 @@ export default function Body({ children }: { children: React.ReactNode }) {
     <>
       <ReduxProvider>
         <RouterWrapper>
-          <AuthProvider>
-            <AntdRegistry>
-              {!headHiddenArr.includes(pathname) && <Header />}
-              {children}
-            </AntdRegistry>
-          </AuthProvider>
+          <AntdRegistry>
+            {!headHiddenArr.includes(pathname) && <Header />}
+            {children}
+          </AntdRegistry>
         </RouterWrapper>
       </ReduxProvider>
     </>
