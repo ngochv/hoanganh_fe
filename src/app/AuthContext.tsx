@@ -2,15 +2,15 @@
 
 import { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";
 
-import { COOKIE_AUTH } from "@/constants/cache";
-import { useAppDispatch } from "@/lib/store/store";
-import { deleteAuthState, setAuthState } from "@/lib/store/authSlice";
+import { RootState, useAppDispatch } from "@/lib/store/store";
+import { deleteAuthState } from "@/lib/store/authSlice";
+import { useSelector } from "react-redux";
+import { isAuthentication, removeToken } from "@/utils/auth";
 
 interface IAuthContextType {
   user: IUserAuth | null;
-  login: (email: string, password: string) => Promise<void>;
+  setUserAuth: (user: IUserAuth) => void;
   logout: () => Promise<void>;
 }
 
@@ -23,46 +23,29 @@ const AuthContext = createContext<IAuthContextType | null>(null);
 export const AuthProvider = ({ children }: IAuthProviderProps) => {
   const [user, setUser] = useState<IUserAuth | null>(null);
   const router = useRouter();
+  const userState = useSelector((state: RootState) => state.auth.user);
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (Cookies.get(COOKIE_AUTH)) {
-      setUser({
-        id: 1,
-        name: "ngoc.hoang@gmail.com",
-        email: "ngoc.hoang@gmail.com",
-      });
+    if (JSON.stringify(userState) && isAuthentication()) {
+      setUser(userState);
     }
   }, []);
 
-  const login = async (email: string, password: string) => {
-    Cookies.set(COOKIE_AUTH, "value", { expires: 7 });
-    dispatch(
-      setAuthState({
-        user: {
-          id: 1,
-          name: "ngoc.hoang@gmail.com",
-          email: "ngoc.hoang@gmail.com",
-        },
-      })
-    );
-    setUser({
-      id: 1,
-      name: "ngoc.hoang@gmail.com",
-      email: "ngoc.hoang@gmail.com",
-    });
+  const setUserAuth = (user: IUserAuth) => {
+    setUser(user);
   };
 
   const logout = async () => {
-    Cookies.remove(COOKIE_AUTH);
+    removeToken();
     setUser(null);
-    dispatch(deleteAuthState())
+    dispatch(deleteAuthState());
     router.push("/login");
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, setUserAuth, logout }}>
       {children}
     </AuthContext.Provider>
   );

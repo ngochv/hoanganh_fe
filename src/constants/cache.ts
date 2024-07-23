@@ -1,1 +1,1 @@
-export const COOKIE_AUTH = 'app_key';
+export const COOKIE_AUTH = 'asset_token';

@@ -9,7 +9,7 @@ const defaultHeaders = {
 const axiosInstance = Axios.create({
   headers: defaultHeaders,
   timeout: 3 * 60 * 1000,
-  baseURL: process.env.REACT_APP_API_DOMAIN,
+  baseURL: process.env.NEXT_PUBLIC_API_DOMAIN,
 });
 
 axiosInstance.interceptors.request.use(
@@ -36,7 +36,12 @@ axiosInstance.interceptors.response.use(
 export const sendGet = (url: string, params?: any) =>
   axiosInstance
     .get(url, { params })
-    .then((res) => ({ data: res.data, status: res.status }))
+    .then((res) => ({
+      data: res?.data.result,
+      message: res?.data.message,
+      success: res?.data.success,
+      status: res.status,
+    }))
     .catch((err) => ({
       status: err.response?.status ? err.response?.status : 500,
       data: err.response?.data,
@@ -45,16 +50,26 @@ export const sendGet = (url: string, params?: any) =>
 export const sendPost = (url: string, params = {}, queryParams = {}) =>
   axiosInstance
     .post(url, params, { params: queryParams })
-    .then((res) => ({ data: res.data, status: res.status }))
+    .then((res) => ({
+      data: res?.data.result,
+      message: res?.data.message,
+      success: res?.data.success,
+      status: res.status,
+    }))
     .catch((err) => ({
       status: err.response?.status ? err.response?.status : 500,
-      data: err.response?.data,
+      data: err.response?.data.result,
     }));
 
 export const sendPut = (url: string, params?: any) =>
   axiosInstance
     .put(url, params)
-    .then((res) => ({ data: res.data, status: res.status }))
+    .then((res) => ({
+      data: res?.data.result,
+      message: res?.data.message,
+      success: res?.data.success,
+      status: res.status,
+    }))
     .catch((err) => ({
       status: err.response?.status ? err.response?.status : 500,
       data: err.response?.data,
@@ -63,8 +78,13 @@ export const sendPut = (url: string, params?: any) =>
 export const sendDelete = (url: string, params?: any) =>
   axiosInstance
     .delete(url, { params })
-    .then((res) => ({ data: res.data, status: res.status }))
+    .then((res) => ({
+      data: res?.data.result,
+      message: res?.data.message,
+      success: res?.data.success,
+      status: res.status,
+    }))
     .catch((err) => ({
       status: err.response?.status ? err.response?.status : 500,
-      data: err.response?.data,
+      data: err.response?.data.result,
     }));

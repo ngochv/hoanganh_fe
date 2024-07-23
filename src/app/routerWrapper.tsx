@@ -1,10 +1,9 @@
 "use client";
 
-import Cookies from "js-cookie";
+import { isAuthentication } from "@/utils/auth";
 import { usePathname, useRouter } from "next/navigation";
 
 export const RouterWrapper = (props: React.PropsWithChildren<{}>) => {
-  const token = Cookies.get("app_key");
   const pathname = usePathname();
   const router = useRouter();
 
@@ -13,12 +12,16 @@ export const RouterWrapper = (props: React.PropsWithChildren<{}>) => {
   const invalidPaths = notAllowLoggedInPaths.filter((path: string) =>
     pathname.includes(path)
   );
-  const isRedirectLogin = !!invalidPaths.length || (!invalidPaths.length && !(pathname === '' || pathname === '/'))
+  
+  const isRedirectLogin =
+    !!invalidPaths.length ||
+    (!invalidPaths.length && !(pathname === "" || pathname === "/"));
 
-  if (!token && isRedirectLogin) {
+  if (!isAuthentication() && isRedirectLogin) {
     router.push("/login");
   }
-  if (token && pathname.startsWith("/login")) {
+
+  if (isAuthentication() && pathname.startsWith("/login")) {
     router.push("/");
   }
 

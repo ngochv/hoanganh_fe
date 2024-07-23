@@ -1,0 +1,28 @@
+.pageLogin {
+  h2 {
+    background-color: #1677ff;
+    padding-top: 50px;
+    padding-bottom: 39px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    color: #fff
+  }
+}
+.formLogin {
+  padding: 2rem;
+}
+
+.boxLogin {
+  border-radius: 10px;
+  box-shadow: 0 10px 34px -15px #0000003d;
+}
+
+.inputLabel {
+  :global(.ant-form-item-label) {
+    // padding-bottom: 0px !important;
+  }
+}
+
+.btnSubmit {
+  width: 100%;
+}
