@@ -4,7 +4,7 @@ import { Button } from "antd";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
-import { removeToken } from "@/utils/auth";
+import { deleteToken } from "@/utils/auth";
 import { deleteAuthState } from "@/lib/store/authSlice";
 import { RootState, useAppDispatch } from "@/lib/store/store";
 
@@ -14,15 +14,15 @@ export default function Home() {
   const router = useRouter();
 
   const logout = () => {
-    removeToken();
+    deleteToken();
     dispatch(deleteAuthState());
     router.push("/login");
   };
 
   return (
-    <main>
-      <div>Page home {userState?.name}</div>
-      <Button onClick={() => logout()}>Logout</Button>
-    </main>
+    <section>
+      page home client
+      {/* <Button onClick={() => logout()}>Logout</Button> */}
+    </section>
   );
 }

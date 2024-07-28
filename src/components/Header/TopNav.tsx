@@ -14,15 +14,23 @@ import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import classNames from "classnames";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ROUTE_CLIENT } from "@/layouts/client/route";
+import { getNavigation } from "@/utils";
+import utilStyle from "./utilStyle.module.scss";
 
-export default function TopNav() {
-  const pathname = usePathname();
+type ITopNav = {
+  pathname: string;
+  navigation: IRoute[];
+  onClickLogout: () => void;
+  authState?: IAuthState | null | undefined;
+};
 
-  const navigation = [
-    { name: "Dashboard", href: "/", current: pathname === "/" },
-    { name: "Posts", href: "/posts", current: pathname.startsWith("/posts") },
-  ];
-
+export default function TopNav({
+  pathname,
+  navigation,
+  onClickLogout,
+  authState,
+}: ITopNav) {
   return (
     <div>
       <Disclosure as="nav" className="bg-gray-800">
@@ -72,14 +80,14 @@ export default function TopNav() {
               </div>
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              <button
+              {/* <button
                 type="button"
                 className="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
               >
                 <span className="absolute -inset-1.5" />
                 <span className="sr-only">View notifications</span>
                 <BellIcon aria-hidden="true" className="h-6 w-6" />
-              </button>
+              </button> */}
 
               {/* Profile dropdown */}
               <Menu as="div" className="relative ml-3">
@@ -89,10 +97,13 @@ export default function TopNav() {
                     <span className="sr-only">Open user menu</span>
                     <img
                       alt=""
-                      src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      src="https://www.shutterstock.com/image-vector/young-smiling-man-adam-avatar-260nw-2107967969.jpg"
                       className="h-8 w-8 rounded-full"
                     />
                   </MenuButton>
+                  <div className={utilStyle.accountName}>
+                    {authState?.user?.name}
+                  </div>
                 </div>
                 <MenuItems
                   transition
@@ -100,26 +111,11 @@ export default function TopNav() {
                 >
                   <MenuItem>
                     <a
+                      onClick={onClickLogout}
                       href="#"
                       className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
                     >
-                      Your Profile
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                    >
-                      Settings
-                    </a>
-                  </MenuItem>
-                  <MenuItem>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100"
-                    >
-                      Sign out
+                      Đăng xuất
                     </a>
                   </MenuItem>
                 </MenuItems>

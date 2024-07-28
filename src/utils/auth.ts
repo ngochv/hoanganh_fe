@@ -9,7 +9,7 @@ export function getToken() {
   return Cookies.get(COOKIE_AUTH);
 }
 
-export function removeToken() {
+export function deleteToken() {
   return Cookies.remove(COOKIE_AUTH);;
 }
 

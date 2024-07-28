@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { RootState, useAppDispatch } from "@/lib/store/store";
 import { deleteAuthState } from "@/lib/store/authSlice";
 import { useSelector } from "react-redux";
-import { isAuthentication, removeToken } from "@/utils/auth";
+import { isAuthentication, deleteToken } from "@/utils/auth";
 
 interface IAuthContextType {
   user: IUserAuth | null;
@@ -38,7 +38,7 @@ export const AuthProvider = ({ children }: IAuthProviderProps) => {
   };
 
   const logout = async () => {
-    removeToken();
+    deleteToken();
     setUser(null);
     dispatch(deleteAuthState());
     router.push("/login");
