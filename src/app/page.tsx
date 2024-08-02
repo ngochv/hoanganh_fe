@@ -1,12 +1,12 @@
 "use client";
 
-import { Button } from "antd";
 import { useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 import { deleteToken } from "@/utils/auth";
 import { deleteAuthState } from "@/lib/store/authSlice";
 import { RootState, useAppDispatch } from "@/lib/store/store";
+import OrderCreate from "./orders/create";
 
 export default function Home() {
   const userState = useSelector((state: RootState) => state.auth.user);
@@ -21,8 +21,7 @@ export default function Home() {
 
   return (
     <section>
-      page home client
-      {/* <Button onClick={() => logout()}>Logout</Button> */}
+      <OrderCreate />
     </section>
   );
 }
